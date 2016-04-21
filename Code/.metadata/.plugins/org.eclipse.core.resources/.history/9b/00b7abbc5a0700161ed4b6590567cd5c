@@ -1,0 +1,9 @@
+package net.kerfuffle.LanWar.Client;
+
+public class Default {
+
+	public static int originX = 0, originY = 0;
+	
+	
+	public static final int GRAV_GUN = 0, MIMIC = 1, DIM_DRIFT = 2, LASER = 3, BREACH_BOMB_RAND = 4, BREACH_BOMB_KIT = 5, BLOCK = 6, FIST = 7, MEGA_LASER = 8;
+}

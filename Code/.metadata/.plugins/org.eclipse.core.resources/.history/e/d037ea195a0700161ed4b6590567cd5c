@@ -1,0 +1,7 @@
+package net.kerfuffle.LanWar.Client;
+
+public class Default {
+
+	public static int originX = 0, originY = 0;
+	
+}

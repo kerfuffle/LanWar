@@ -1,0 +1,58 @@
+package net.kerfuffle.LanWar.Client;
+
+import java.util.ArrayList;
+
+import net.kerfuffle.Utilities.RGB;
+
+import static net.kerfuffle.LanWar.Client.Default.*;
+
+public class Player {
+
+	private RGB color;
+	private int x, y;
+	private int Orientation = RIGHT;		// make a set function for this
+	
+	private Toolbar tools = new Toolbar();
+	
+	public Player(int x, int y, RGB color)
+	{
+		this.x = x;
+		this.y = y;
+		this.color = color;
+	}
+	
+	/**
+	 * Set by server (should be called after joining server, or if color is for some reason updated by server)
+	 * @param color  new color
+	 */
+	public void setColor(RGB color)
+	{
+		this.color = color;
+	}
+
+	
+	/**
+	 * Player picks up tool
+	 * Set by server (after server confirms that player did pick up item)
+	 * @param t		tool to be added
+	 */
+	public void addTool(Tool t)
+	{
+		tools.addTool(t);
+	}
+	
+	/**
+	 * Player drops tool
+	 * Player uses tool
+	 * Set by server (after server confirms that player can drop/use tool)
+	 * @param t		tool to be removed
+	 */
+	public void removeTool(Tool t)
+	{
+		tools.removeTool(t);
+	}
+	public void removeTool(int i)
+	{
+		tools.removeTool(i);
+	}
+}

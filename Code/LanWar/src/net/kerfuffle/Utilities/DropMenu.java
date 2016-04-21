@@ -1,0 +1,140 @@
+package net.kerfuffle.Utilities;
+
+import java.util.ArrayList;
+import org.lwjgl.input.Mouse;
+import static net.kerfuffle.LanWar.Client.Default.*;
+import static net.kerfuffle.Utilities.Util.*;
+
+public class DropMenu implements MenuComponent{
+
+	
+	private Quad base;
+	private String name;
+	private ArrayList <Option> options = new ArrayList<Option>();
+	private boolean showOptions = false;
+	private float bx, by;
+	
+	public DropMenu(String name, Quad base, String optionsStr[])
+	{
+		this.base = base;
+		this.name = name;
+		
+		for (int i = 0 ; i < optionsStr.length; i++)
+		{
+			options.add(new Option(optionsStr[i], new Quad(base.x, base.y, base.w, base.h, base.color)));
+		}
+		
+		int count = 1;
+		for (Option o : options)
+		{
+			o.box.y = base.y - (count*base.h);
+			count++;
+		}
+		
+		bx = base.x + (base.w/2) - (name.length()*3.7f);
+		by = base.y + (base.h/2) - 5;
+	}
+	
+	public void addOption(String name)
+	{
+		options.add(new Option(name, base));
+	}
+	public void removeOption(String name)
+	{
+		for (int i = 0; i < options.size(); i++)
+		{
+			if (options.get(i).getName().equals(name))
+			{
+				options.remove(i);
+				return;
+			}
+		}
+	}
+	public void removeOption(int i)
+	{
+		options.remove(i);
+	}
+	
+	
+	public void update()
+	{
+		base.draw();
+		color(new RGB(0, 0, 0));
+		drawString(name, bx, by);
+		
+		if (isClick())
+		{
+			showOptions = !showOptions;
+		}
+		
+		if (showOptions)
+		{
+			for (Option o : options)
+			{
+				float x = o.box.x + (o.box.w/2) - (o.getName().length()*3.7f);
+				float y = o.box.y + (o.box.h/2) - 5;
+				
+				o.box.draw();
+				color(new RGB(0, 0, 0));
+				drawString(o.getName(), x, y);
+				lineH(o.box.x, o.box.y+o.box.h, o.box.w);
+			}
+		}
+		
+	}
+	
+	public boolean isClick()
+	{
+		if (onClick(base, originX + Mouse.getX(), originY + Mouse.getY()))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isClick(String name)
+	{
+		//Was testing to solve why dropmenu is not expanding
+		
+		if (!showOptions)
+		{
+			return false;
+		}
+		for (Option o : options)
+		{
+			if (name.equals(o.getName()))
+			{
+				if (onClick(o.box, originX + Mouse.getX(), originY + Mouse.getY()))
+				{
+					System.out.println("click");
+					showOptions = false;
+					this.name = o.getName();
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public void showOptions(boolean b)
+	{
+		showOptions = b;
+	}
+	
+	private class Option
+	{
+		private String name;
+		public Quad box;
+		
+		public Option(String name, Quad box)
+		{
+			this.name = name;
+			this.box = box;
+		}
+		
+		public String getName()
+		{
+			return name;
+		}
+	}
+}
